@@ -13,7 +13,7 @@
 #define PIN_TRAVA  13
 #define PIN_LED    2
 
-DHT11 dht;   // <-- A SUA BIBLIOTECA É ASSIM!
+DHT11 dht(PIN_DHT);    // <-- A SUA BIBLIOTECA É ASSIM!
 
 // =====================================
 // === VARIÁVEIS DE ESTADO =============
@@ -75,14 +75,11 @@ void handleDestrancar() {
 void handleStatus() {
     StaticJsonDocument<200> doc;
 
-    // === LEITURA CORRETA DO DHT11 (SUA BIBLIOTECA) ===
-    dht.read(PIN_DHT);
+    int t = dht.readTemperature();  // <-- FORMA CORRETA
+    int h = dht.readHumidity();     // <-- FORMA CORRETA
 
-    int temperature = dht.temperature;
-    int humidity    = dht.humidity;
-
-    doc["temp"]  = temperature;
-    doc["umid"]  = humidity;
+    doc["temp"]  = t;
+    doc["umid"]  = h;
     doc["trancada"] = geladeiraTrancada;
     doc["buzzerDesligado"] = buzzerDesligado;
 
